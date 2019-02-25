@@ -27,16 +27,17 @@ contract SafeMath {
 
 
 
-contract ANGToken is SafeMath {
+contract ERC223Token is SafeMath {
 
   event Transfer(address indexed _from, address indexed _to, uint256 _value, bytes _data);
 
   mapping(address => uint) balances;
 
-  string public token_name    = "Angel";
-  string public token_symbol  = "ANG";
+  string public token_name    = "Token";
+  string public token_symbol  = "TKN";
   uint public token_decimals = 18;
   uint256 public token_totalSupply;
+  address owner;
 
   constructor () public
   {
@@ -44,7 +45,10 @@ contract ANGToken is SafeMath {
       token_totalSupply = balances[0xdc8fE10C5e872e25Ac24dE310e60D88E4b7a22a1];
   }
 
-
+   modifier onlyOwner(address _owner) {
+       require(_owner == owner);
+       _;
+   }
   // Function to access name of token .
   function name() public view  returns (string memory _name) {
       return token_name;
@@ -62,6 +66,15 @@ contract ANGToken is SafeMath {
       return token_totalSupply;
   }
 
+
+
+    function mine( uint256 qty ) public onlyOwner(msg.sender) {
+    require ((token_totalSupply + qty) > token_totalSupply );
+
+    token_totalSupply += qty;
+    balances[owner] += qty;
+    emit Transfer( address(0), owner, qty ,'mine');
+    }
 
   // Function that is called when a user or another contract wants to transfer funds .
   function transfer(address _to, uint _value, bytes memory _data, bytes memory custom_fallback)
