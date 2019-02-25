@@ -27,22 +27,21 @@ contract SafeMath {
 
 
 
-contract ERC223Token is SafeMath {
+contract ANGToken is SafeMath {
 
   event Transfer(address indexed _from, address indexed _to, uint256 _value, bytes _data);
 
   mapping(address => uint) balances;
 
-  string public token_name    = "Token";
-  string public token_symbol  = "TKN";
+  string public token_name    = "Angel";
+  string public token_symbol  = "ANG";
   uint public token_decimals = 18;
   uint256 public token_totalSupply;
   address owner;
 
   constructor () public
   {
-      balances[0xdc8fE10C5e872e25Ac24dE310e60D88E4b7a22a1] = 3000000 * (10 ** token_decimals);
-      token_totalSupply = balances[0xdc8fE10C5e872e25Ac24dE310e60D88E4b7a22a1];
+    owner = msg.sender;
   }
 
    modifier onlyOwner(address _owner) {
